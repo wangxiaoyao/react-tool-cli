@@ -14,6 +14,7 @@ npm run eject
 
 ### 3 引用路径修改,路径简化
 
+```
 alias: {
 "@src": path.resolve("src"),
 "@component": path.resolve("src/component"),
@@ -21,20 +22,22 @@ alias: {
 "@util": path.resolve("src/util"),
 "@service": path.resolve("src/service"),
 }
+```
 
 ### 4 使用 less, localIdentName
 
 > 使用 less 进行 css 的解析。并配置配置 localIdentName 作为 class 的命名规则：就可以实现 class 命名了 在生产环境下修改规则，生成更短的 class 名，可以提高 CSS 的压缩率。选择 base64 的 5 个字符。
 
-// 1 安装： 由于仅在开发时使用： --save-dev， 发布后的生产不需要
+1 安装： 由于仅在开发时使用： --save-dev， 发布后的生产不需要
 npm install less-loader --save-dev
 
-// 1 添加 less 解析规则
+2 添加 less 解析规则
 const lessRegex = /\.less$/;
 const lessModuleRegex = /\.module\.less$/;
 
-//2 Less 解析配置: 注意写在在 file-loader 上面
+3 Less 解析配置: 注意写在在 file-loader 上面
 
+```
 {
 test: lessRegex,
 exclude: lessModuleRegex,
@@ -62,21 +65,20 @@ getLocalIdent: getCSSModuleLocalIdent,
 "less-loader"
 ),
 },
+```
 
-### 5 初始 css
+### 5 初始画 css
 
 ### 6 配置路由
 
 ```
-## 基于浏览器开发的router
-react-router-dom
-
-## router文件夹包含所有的路由配置。以及路由分配的函数
+## 基于浏览器开发的router，router文件夹包含所有的路由配置。以及路由分配的函数
+npm install react-router-dom
 ```
 
 ### 7 server
 
-- 1 package 使用本地作为代理: "proxy": "http://127.0.0.1/",
+- 1 package 使用代理进行数据 mock: "proxy": "http://127.0.0.1:3001",
 
 - 2 umi-request 或者 axios 库
 
@@ -93,11 +95,7 @@ msg: 反馈信息
 方案：利用 json-server 真实的模拟后端数据，concurrently 并发的启动前端和后端
 
 ```
-## 生成数据
-yarn add mockjs --save-dev
-
-## 库
-npm install json-server concurrently --save-dev
+npm install json-server concurrently mockjs--save-dev
 ```
 
 1 数据的随机生成： 详见 mockjs 官网
@@ -118,11 +116,11 @@ npm install json-server concurrently --save-dev
 "/api/v2/*": "/$1",
 ```
 
-- 2 post 请求
+- 2 post 请求。 在 umiRequest.js 文件中已经设置
 
 注意设置头部 Content-type 为 “application/json”
 
-- 3 自定义 req 和 res
+- 3 自定义 req 和 res 行为
 
 - 4 并行启动 mock 和前端项目
 
@@ -133,7 +131,7 @@ npm install json-server concurrently --save-dev
 
 ### 9 store 的使用
 
-> 不需要要共享的数据，没必要使用redux。 
+> 不需要要共享的数据，没必要使用 redux。
 
 ```
 ## redux是核心，react-redux扩展， thunk支持函数
