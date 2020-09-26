@@ -1,12 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Common from "@src/page/Common";
+import { Switch, BrowserRouter } from "react-router-dom";
+import { routes, RouteWithSubRoutes } from "@src/router";
 import "./index.css";
+
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Common />
+    <BrowserRouter>
+      <Switch>
+        {routes.map((route, i) => {
+          return <RouteWithSubRoutes {...route} />;
+        })}
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
