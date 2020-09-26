@@ -94,7 +94,7 @@ msg: 反馈信息
 
 ```
 ## 生成数据
-yarn add mockjs
+yarn add mockjs --save-dev
 
 ## 库
 npm install json-server concurrently --save-dev
@@ -133,8 +133,9 @@ npm install json-server concurrently --save-dev
 
 ### 9 store 的使用
 
-"proxy": {
-"/api": {
-"target":
-}
-},
+> 不需要要共享的数据，没必要使用redux。 
+
+```
+## redux是核心，react-redux扩展， thunk支持函数
+npm install redux react-redux redux-thunk
+```

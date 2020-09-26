@@ -2,19 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Switch, BrowserRouter } from "react-router-dom";
 import { routes, RouteWithSubRoutes } from "@src/router";
+import store from "./store";
+import { Provider } from "react-redux";
 import "./index.css";
 
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Switch>
-        {routes.map((route, i) => {
-          return <RouteWithSubRoutes {...route} />;
-        })}
-      </Switch>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          {routes.map((route, i) => {
+            return <RouteWithSubRoutes {...route} />;
+          })}
+        </Switch>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

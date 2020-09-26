@@ -5,5 +5,10 @@
     "email": "linger77@gmail.com",
     "password": "123",
     "createdAt": 1601086941529
+  },
+  "getAsyncDataRedux": {
+    "code": 0,
+    "data": "这是redux异步请求得到的数据",
+    "msg": "成功"
   }
 }

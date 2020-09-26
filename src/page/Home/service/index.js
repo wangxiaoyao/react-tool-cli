@@ -17,3 +17,11 @@ export async function signIn(params) {
   });
   return data;
 }
+
+export async function getAsyncDataRedux(params) {
+  const data = await request("/api/v2/getAsyncDataRedux", {
+    method: "get",
+    params,
+  });
+  return data;
+}
