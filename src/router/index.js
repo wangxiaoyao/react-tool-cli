@@ -6,10 +6,7 @@ export function RouteWithSubRoutes(route) {
     <Route
       path={route.path}
       render={(props) => {
-        return (
-          // pass the sub-routes down to keep nesting
-          <route.component {...props} routes={route.routes} />
-        );
+        return <route.component {...props} routes={route.routes} exact />;
       }}
     />
   );
@@ -17,7 +14,7 @@ export function RouteWithSubRoutes(route) {
 
 export const routes = [
   {
-    path: "/",
+    path: "/home",
     component: require("@page/Home").default,
     key: "home",
     // redirect: "/home/page1",
@@ -39,10 +36,5 @@ export const routes = [
     path: "/login",
     component: require("@page/Login").default,
     key: "login",
-  },
-  {
-    path: "*",
-    component: require("@page/Whoops404").default,
-    key: "Whoops404",
   },
 ];

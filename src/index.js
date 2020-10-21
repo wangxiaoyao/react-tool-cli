@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Switch, BrowserRouter } from "react-router-dom";
+import { Switch, BrowserRouter, Redirect } from "react-router-dom";
 import { routes, RouteWithSubRoutes } from "@src/router";
 import store from "./store";
 import { Provider } from "react-redux";
@@ -16,6 +16,7 @@ ReactDOM.render(
           {routes.map((route, i) => {
             return <RouteWithSubRoutes {...route} />;
           })}
+          {/* <Redirect from="/" to="/home/page1"></Redirect> */}
         </Switch>
       </BrowserRouter>
     </Provider>

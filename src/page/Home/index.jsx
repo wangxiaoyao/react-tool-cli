@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Redirect } from "react-router-dom";
 import { RouteWithSubRoutes } from "@src/router";
-import { signIn, getPageData } from "./service";
+import { signIn } from "./service";
 import { connect } from "react-redux";
 import {
   addNumActionCreator,
@@ -10,14 +10,6 @@ import {
 
 const Home = (props) => {
   const { routes, num, addNum, asyncDataRedux, getAsyncDataRedux } = props;
-  const [state, setState] = useState(false);
-
-  const getPageDataFun = async () => {
-    const data = await getPageData({
-      a: "1",
-    });
-    return data;
-  };
 
   const handleClick = async () => {
     const data = await signIn({
@@ -26,28 +18,23 @@ const Home = (props) => {
       password: "123",
     });
     console.log(data);
-    setState(data.success);
   };
 
   useEffect(() => {
-    // useEffect 里先于异步执行。所以无法获取到data,不能在[]中使用set
-    const result = getPageDataFun();
     getAsyncDataRedux();
-    console.log(result);
   }, [getAsyncDataRedux]);
 
   return (
     <div>
-      <h1 onClick={handleClick}>Home</h1>
-
-      {state ? <div>123</div> : <div>456</div>}
+      <p>Home</p>
+      <h1 onClick={handleClick}> 1 点击异步获取signIn接口</h1>
 
       <div>
+        <button onClick={addNum}>2 点击NUM增加</button>
         <p>{num}</p>
-        <button onClick={addNum}>点击NUM增加</button>
       </div>
 
-      <div>{asyncDataRedux}</div>
+      <div>3 {asyncDataRedux}</div>
 
       <Switch>
         {routes.map((route, i) => {

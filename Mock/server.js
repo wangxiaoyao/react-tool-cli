@@ -7,7 +7,7 @@ const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 
-// // 自定义路由 $1 表示 *所指向的
+// 使用 $1 表示 *。 这样访问 /api/v1/A 相当与访问/A
 server.use(
   jsonServer.rewriter({
     "/api/v1/*": "/$1",
