@@ -67,12 +67,12 @@ getLocalIdent: getCSSModuleLocalIdent,
 },
 ```
 
-### 5 初始画 css
+### 5 初始化 css
 
 ### 6 配置路由
 
 ```
-## 基于浏览器开发的router，router文件夹包含所有的路由配置。以及路由分配的函数
+## 基于浏览器开发的router，router文件夹包含基本路由配置。以及路由分配的函数
 npm install react-router-dom
 ```
 
@@ -82,25 +82,23 @@ npm install react-router-dom
 
 - 2 umi-request 或者 axios 库
 
-umi-request 的配置文件放在 util 中： 我这里约定后端：
-
-```
-code: 0是成功 1是失败
-data: 获取到的数据
-msg: 反馈信息
-```
+umi-request 的配置文件放在 util 中。
 
 ### 8 mock:
 
-方案：利用 json-server 真实的模拟后端数据，concurrently 并发的启动前端和后端
+方案是利用 json-server 真实的模拟后端数据。配置文件在： Mock 中的 server.js
 
 ```
+## 安装 concurrently
 npm install json-server concurrently mockjs--save-dev
+
+##修改 package.json 则使用 npm run start 并发运行前后端
+"start": "concurrently 'node scripts/start.js' 'node ./Mock/server.js'",
 ```
 
 1 数据的随机生成： 详见 mockjs 官网
 
-2 使用
+2 模拟数据使用：
 
 - 1 配置路由： 若是出现 api 地址如下
 
@@ -123,11 +121,6 @@ npm install json-server concurrently mockjs--save-dev
 - 3 自定义 req 和 res 行为
 
 - 4 并行启动 mock 和前端项目
-
-```
-##package.json
-"start": "concurrently 'node scripts/start.js' 'node ./Mock/server.js'",
-```
 
 ### 9 store 的使用
 

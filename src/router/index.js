@@ -17,7 +17,7 @@ export function RouteWithSubRoutes(route) {
 
 export const routes = [
   {
-    path: "/home",
+    path: "/",
     component: require("@page/Home").default,
     key: "home",
     // redirect: "/home/page1",
