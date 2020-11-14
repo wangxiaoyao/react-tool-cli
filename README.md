@@ -3,7 +3,7 @@
 依据 create-react-app 创建一个自己的脚手架，以及常见库的使用。有两个分支：
 
 - master：基本框架
-- library：常用库使用
+- library：常用库使用中
 
 ## 主分支： 框架的修改
 
