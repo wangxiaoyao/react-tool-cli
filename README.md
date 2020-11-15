@@ -104,7 +104,7 @@ npm install json-server concurrently mockjs --save-dev
 - 1 页面的service.js中使用定义好的接口： "/api/v2/getAsyncDataRedux"
 - 2 在package.json中使用代理 "proxy": "http://127.0.0.1:3001"。
 
-代理的意思： 所有类似"/api/v2/getAsyncDataRedux"的service接口，访问的是“http://localhost:3000/api/v2/getAsyncDataRedux”。 但是代理改变了二级域名："http://127.0.0.1:3001/api/v2/getAsyncDataRedux"。 
+代理的意思： 所有类似"/api/v2/getAsyncDataRedux"的service接口，浏览器依旧访问的是“http://localhost:3000/api/v2/getAsyncDataRedux”。 但是creat-react-app的proxy代理实现了请求转发。将其转到了："http://127.0.0.1:3001/api/v2/getAsyncDataRedux"。  因此不会触发CORS安全策略。
 
 让JsonService.js中进行监听3001 这个端口，当request 访问3001 端口（上面设置的proxy）就会返回数据。
 
@@ -132,6 +132,19 @@ npm install json-server concurrently mockjs --save-dev
 ```
 
 - 2 post 请求。 在 umiRequest.js 文件中已经设置。 注意设置头部 Content-type 为 “application/json”
+
+- 3 配置多个代理
+
+```
+"proxy":{
+	"/api":{
+		"target": "http://XXXXX:3001"
+	},
+	"/api2":{
+		"target": "http://XXXXX:3002"
+	}
+}
+```
 
 ### 9 store 的使用
 
