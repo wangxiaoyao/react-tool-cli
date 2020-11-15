@@ -26,6 +26,7 @@ alias: {
 "@page": path.resolve("src/page"),
 "@util": path.resolve("src/util"),
 "@service": path.resolve("src/service"),
+"@router": path.resolve("src/router"),
 }
 ```
 
@@ -74,20 +75,19 @@ getLocalIdent: getCSSModuleLocalIdent,
 
 ### 5 初始化 css
 
-初始化css 放入index.css中
+初始化 css 放入 index.css 中
 
-### 6 配置路由
+### 6 配置路由：react-router-dom
 
-```
-## 基于浏览器开发的router，router文件夹包含基本路由配置。以及路由分配的函数
-npm install react-router-dom
-```
+1 路由配置项：RouteConfig。 该文件定义了该项目所有的路由路径
+
+2 写一类 RouteView。分解 RouteConfig 转化为 路由。 值得注意的是将 redirect 进行提取 并添加到后面
 
 ### 7 server
 
 > umi-request 或者 axios 库。 umi-request 的配置文件放在 util 中。
 
-### 8 mock数据
+### 8 mock 数据
 
 > 方案: 利用 json-server 真实的模拟后端数据和接口。
 
@@ -101,25 +101,26 @@ npm install json-server concurrently mockjs --save-dev
 
 怎样模拟数据的：
 
-- 1 页面的service.js中使用定义好的接口： "/api/v2/getAsyncDataRedux"
-- 2 在package.json中使用代理 "proxy": "http://127.0.0.1:3001"。
+- 1 页面的 service.js 中使用定义好的接口： "/api/v2/getAsyncDataRedux"
+- 2 在 package.json 中使用代理 "proxy": "http://127.0.0.1:3001"。
 
-代理的意思： 所有类似"/api/v2/getAsyncDataRedux"的service接口，浏览器依旧访问的是“http://localhost:3000/api/v2/getAsyncDataRedux”。 但是creat-react-app的proxy代理实现了请求转发。将其转到了："http://127.0.0.1:3001/api/v2/getAsyncDataRedux"。  因此不会触发CORS安全策略。
+代理的意思： 所有类似"/api/v2/getAsyncDataRedux"的 service 接口，浏览器依旧访问的是“http://localhost:3000/api/v2/getAsyncDataRedux”。 但是 creat-react-app 的 proxy 代理实现了请求转发。将其转到了："http://127.0.0.1:3001/api/v2/getAsyncDataRedux"。 因此不会触发 CORS 安全策略。
 
-让JsonService.js中进行监听3001 这个端口，当request 访问3001 端口（上面设置的proxy）就会返回数据。
+让 JsonService.js 中进行监听 3001 这个端口，当 request 访问 3001 端口（上面设置的 proxy）就会返回数据。
 
-- 3 通过JsonService.js(配置文件)：使用中间件，将访问的"/api/v2/getAsyncDataRedux" 接口转化为访问："getAsyncDataRedux"。 包括怎样处理post请求，自定义 req 和 res 行为
+- 3 通过 JsonService.js(配置文件)：使用中间件，将访问的"/api/v2/getAsyncDataRedux" 接口转化为访问："getAsyncDataRedux"。 包括怎样处理 post 请求，自定义 req 和 res 行为
 
-- 4 我们在db.json中 定义模拟数据：
+- 4 我们在 db.json 中 定义模拟数据：
 
 ```
 "getAsyncDataRedux" :{
 	XXX
 }
 ```
+
 相关问题：
 
-- 1 配置路由： 若是出现 api 地址如下情况。即最后一层相同，那么我们可以设置 db.json 为 v1-query 和 v2-query。然后配置JsonServer.js
+- 1 配置路由： 若是出现 api 地址如下情况。即最后一层相同，那么我们可以设置 db.json 为 v1-query 和 v2-query。然后配置 JsonServer.js
 
 ```
 /api/v1/query

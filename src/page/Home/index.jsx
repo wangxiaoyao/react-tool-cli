@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Switch, Redirect } from "react-router-dom";
-import { RouteWithSubRoutes } from "@src/router";
+import RouteView from "@router/RouteView";
 import { signIn } from "./service/service";
 import { connect } from "react-redux";
 import {
@@ -9,7 +8,7 @@ import {
 } from "./store/actionCreator";
 
 const Home = (props) => {
-  const { routes, num, addNum, asyncDataRedux, getAsyncDataRedux } = props;
+  const { routers, num, addNum, asyncDataRedux, getAsyncDataRedux } = props;
 
   const handleClick = async () => {
     const data = await signIn({
@@ -37,12 +36,10 @@ const Home = (props) => {
 
       <div>3 {asyncDataRedux}</div>
 
-      <Switch>
-        {routes.map((route, i) => {
-          return <RouteWithSubRoutes {...route} />;
-        })}
-        <Redirect from="/home" to="/home/page1"></Redirect>
-      </Switch>
+      <div>
+        <h1>路由子元素</h1>
+        <RouteView routers={routers}></RouteView>
+      </div>
     </div>
   );
 };
