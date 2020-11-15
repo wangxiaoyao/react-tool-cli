@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Switch, Redirect } from "react-router-dom";
 import { RouteWithSubRoutes } from "@src/router";
-import { signIn } from "./service";
+import { signIn } from "./service/service";
 import { connect } from "react-redux";
 import {
   addNumActionCreator,
@@ -22,11 +22,12 @@ const Home = (props) => {
 
   useEffect(() => {
     getAsyncDataRedux();
-  }, [getAsyncDataRedux]);
+  });
 
   return (
     <div>
-      <p>Home</p>
+      <h1>Home</h1>
+
       <h1 onClick={handleClick}> 1 点击异步获取signIn接口</h1>
 
       <div>

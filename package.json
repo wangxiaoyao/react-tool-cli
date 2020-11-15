@@ -68,7 +68,7 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "concurrently 'node scripts/start.js' 'node ./Mock/server.js'",
+    "start": "concurrently 'node scripts/start.js' 'node ./Mock/JsonService.js'",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
