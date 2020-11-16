@@ -6,7 +6,10 @@ import RouteConfig from "@router/RouteConfig";
 
 import store from "./store";
 import { Provider } from "react-redux";
+// 初始化css
 import "./index.css";
+// 引入antd的css文件
+import "antd/dist/antd.css";
 
 import * as serviceWorker from "./serviceWorker";
 

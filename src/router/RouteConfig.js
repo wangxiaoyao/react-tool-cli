@@ -43,6 +43,19 @@ const RouteConfig = [
   //   component: require("@page/Whoops404").default,
   //   key: "404",
   // },
+  // 功能性
+  {
+    title: "表格下载",
+    path: "/download",
+    component: require("@page/Download_lib").default,
+    key: "download",
+  },
+  {
+    title: "树形结构",
+    path: "/tree",
+    component: require("@page/Tree_lib").default,
+    key: "tree",
+  },
 ];
 
 export default RouteConfig;
