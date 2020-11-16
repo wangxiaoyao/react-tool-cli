@@ -56,6 +56,12 @@ const RouteConfig = [
     component: require("@page/Tree_lib").default,
     key: "tree",
   },
+  {
+    title: "下拉刷新",
+    path: "/iscroll",
+    component: require("@page/Iscroll_lib").default,
+    key: "iscroll",
+  },
 ];
 
 export default RouteConfig;
