@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Switch, BrowserRouter, Redirect } from "react-router-dom";
-import { routes, RouteWithSubRoutes } from "@src/router";
+import { BrowserRouter } from "react-router-dom";
+import RouteView from "@router/RouteView";
+import RouteConfig from "@router/RouteConfig";
+
 import store from "./store";
 import { Provider } from "react-redux";
 import "./index.css";
@@ -12,12 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Switch>
-          {routes.map((route, i) => {
-            return <RouteWithSubRoutes {...route} />;
-          })}
-          {/* <Redirect from="/" to="/home/page1"></Redirect> */}
-        </Switch>
+        <RouteView defaultConfig={RouteConfig}></RouteView>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

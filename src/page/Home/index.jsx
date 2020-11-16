@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Redirect } from "react-router-dom";
-import { RouteWithSubRoutes } from "@src/router";
-import { signIn } from "./service";
+import React, { useEffect } from "react";
+import RouteView from "@router/RouteView";
+import { signIn } from "./service/service";
 import { connect } from "react-redux";
 import {
   addNumActionCreator,
@@ -9,7 +8,7 @@ import {
 } from "./store/actionCreator";
 
 const Home = (props) => {
-  const { routes, num, addNum, asyncDataRedux, getAsyncDataRedux } = props;
+  const { routers, num, addNum, asyncDataRedux, getAsyncDataRedux } = props;
 
   const handleClick = async () => {
     const data = await signIn({
@@ -22,11 +21,12 @@ const Home = (props) => {
 
   useEffect(() => {
     getAsyncDataRedux();
-  }, [getAsyncDataRedux]);
+  });
 
   return (
     <div>
-      <p>Home</p>
+      <h1>Home</h1>
+
       <h1 onClick={handleClick}> 1 点击异步获取signIn接口</h1>
 
       <div>
@@ -36,12 +36,10 @@ const Home = (props) => {
 
       <div>3 {asyncDataRedux}</div>
 
-      <Switch>
-        {routes.map((route, i) => {
-          return <RouteWithSubRoutes {...route} />;
-        })}
-        <Redirect from="/home" to="/home/page1"></Redirect>
-      </Switch>
+      <div>
+        <h1>路由子元素</h1>
+        <RouteView routers={routers}></RouteView>
+      </div>
     </div>
   );
 };

@@ -6,9 +6,9 @@
     "password": "123",
     "createdAt": 1603284660089
   },
-  "getAsyncDataRedux": {
+  "v2-getAsyncDataRedux": {
     "code": 0,
-    "data": "这是redux异步请求得到的数据",
+    "data": "这是通过store的actionCreator中异步请求得到的数据",
     "msg": "成功"
   }
 }

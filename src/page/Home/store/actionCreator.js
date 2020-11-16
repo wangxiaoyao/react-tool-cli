@@ -1,5 +1,5 @@
 import actionType from "./actionType";
-import { getAsyncDataRedux } from "../service";
+import { getAsyncDataRedux } from "../service/service";
 
 export const addNumActionCreator = () => {
   return {
