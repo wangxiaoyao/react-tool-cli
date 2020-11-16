@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import RouteView from "@router/RouteView";
-import routeConfig from "@router/routeConfig";
+import RouteConfig from "@router/RouteConfig";
 
 import store from "./store";
 import { Provider } from "react-redux";
@@ -14,7 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <RouteView defaultConfig={routeConfig}></RouteView>
+        <RouteView defaultConfig={RouteConfig}></RouteView>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
