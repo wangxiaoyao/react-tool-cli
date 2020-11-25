@@ -80,6 +80,12 @@ const RouteConfig = [
     component: require("@page/GridLayout_lib").default,
     key: "gridLayout",
   },
+  {
+    title: "表单和table",
+    path: "/formTable",
+    component: require("@page/FormTable_lib").default,
+    key: "formTable",
+  },
 ];
 
 export default RouteConfig;

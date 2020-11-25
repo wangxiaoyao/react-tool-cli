@@ -1,0 +1,261 @@
+import React, { useState, useEffect } from '@alipay/bigfish/react';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import { connect } from '@alipay/bigfish/sdk';
+import { Spin } from '@alipay/bigfish/antd';
+import { getLayout, getUserBlock } from '@/service/dashboard';
+import { importAll } from '@/util';
+import PreviewHeader from '@/layout/IndexLayout/Header';
+import Link from '@alipay/bigfish/link';
+import styles from './index.less';
+
+const compContainerObj = importAll(
+  require.context('@/component/DashboardCards', true, /entry\.jsx$/)
+);
+const ResponsiveGridLayout = WidthProvider(Responsive);
+const Home = props => {
+  const { userInfo = {}, flatMenuList = [] } = props;
+  const { managerId = '' } = userInfo;
+  const [layouts, setLayouts] = useState({ xs: [] });
+  const [loading, setLoading] = useState(false);
+  const [noConfig, setNoConfig] = useState(false);
+  const [userBlockList, setUserBlockList] = useState([]);
+  const getDashboardLayout = async () => {
+    setLoading(true);
+    const res = await getLayout();
+    const list = await getUserBlock();
+    const newList = list.map(i => i.blockId);
+    setUserBlockList(newList);
+    setNoConfig(res === 'noConfig');
+    setLayouts(
+      res === 'noConfig'
+        ? { xs: [] }
+        : {
+            xs: res.map(i => ({ ...i, static: true }))
+          }
+    );
+    setLoading(false);
+  };
+  useEffect(() => {
+    if (managerId) {
+      getDashboardLayout();
+    }
+  }, [managerId]);
+  const rowHeight = 50;
+  const marginTop = 5;
+  const layoutProps = {
+    className: styles.dashboard_left,
+    isDroppable: true,
+    breakpoints: { xs: 480 },
+    cols: { xs: 3 },
+    style: { minHeight: 'calc(100vh - 120px)' },
+    margin: [marginTop, 5],
+    containerPadding: [0, 0],
+    layouts,
+    rowHeight
+  };
+  const HeaderProps = {
+    flatMenuList,
+    ...props
+  };
+  return (
+    <div className={styles.dashboard_home}>
+      <PreviewHeader {...HeaderProps} />
+      <Spin spinning={loading}>
+        {noConfig ? (
+          <div className={styles.config_tips}>
+            可配置个人首页看板，<Link to="/dashboard/setting">入口</Link>
+          </div>
+        ) : (
+          <ResponsiveGridLayout {...layoutProps}>
+            {layouts.xs.map(i => {
+              const compKey = i.i;
+              const Component =
+                compContainerObj[compKey] &&
+                compContainerObj[compKey].component;
+              return (
+                <div key={compKey} style={{ backgroundColor: '#fff' }}>
+                  {Component && userBlockList.includes(compKey) ? (
+                    <Component
+                      height={rowHeight * i.h + marginTop * (i.h - 1) - 1}
+                    />
+                  ) : (
+                    <div className={styles.warn_title}>
+                      该区块已被删除或被变更，请在配置重新配置
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </ResponsiveGridLayout>
+        )}
+      </Spin>
+    </div>
+  );
+};
+export default connect(store => ({
+  ...store.menu
+}))(Home);
+
+import React, { useState, useEffect } from '@alipay/bigfish/react';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import { Spin, message } from '@alipay/bigfish/antd';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import { connect } from '@alipay/bigfish/sdk';
+import { cloneDeep } from '@alipay/bigfish/util/lodash';
+import { getLayout, updateLayout, getUserBlock } from '@/service/dashboard';
+import { importAll } from '@/util';
+import { getGroupComp } from '@/util/block';
+import history from '@alipay/bigfish/sdk/history';
+import Header from './components/Header';
+import RightContent from './components/RightContent';
+import { deepChange } from './utils';
+
+import styles from './index.less';
+
+const compContainerObj = importAll(
+  require.context('@/component/DashboardCards', true, /entry\.jsx$/)
+);
+const tempObj = getGroupComp(compContainerObj);
+let ResponsiveGridLayout = WidthProvider(Responsive);
+
+const Dashboard = props => {
+  const { userInfo = {} } = props;
+  const { managerId = '' } = userInfo;
+  const [layouts, setLayouts] = useState({ xs: [] });
+  const [loading, setLoading] = useState(false);
+  const [dragItem, setDragItem] = useState({});
+  const [status, setStatus] = useState('edit');
+  const [userBlockList, setUserBlockList] = useState([]);
+  const getDashboardLayout = async () => {
+    setLoading(true);
+    const res = await getLayout();
+    const list = await getUserBlock();
+    const newList = list.map(i => i.blockId);
+    setUserBlockList(newList);
+    setLayouts({ xs: res === 'noConfig' ? [] : res });
+    setLoading(false);
+  };
+  useEffect(() => {
+    const newLayouts = cloneDeep(layouts);
+    setLayouts(newLayouts);
+    ResponsiveGridLayout = WidthProvider(Responsive);
+  }, [status]);
+  useEffect(() => {
+    if (managerId) {
+      getDashboardLayout();
+    }
+  }, [managerId]);
+  const onDrop = elemParams => {
+    const newItem = {
+      ...elemParams,
+      i: dragItem.fileName,
+      h: 4,
+      w: 1,
+      component: dragItem.component
+    };
+    const newXs = deepChange(layouts.xs, newItem);
+    setLayouts({ xs: [...newXs, newItem] });
+  };
+  const onLayoutChange = layout => {
+    const newLayout = layout.map(el => {
+      if (el.i === dragItem.title) {
+        return { ...el, component: dragItem.component };
+      }
+      return el;
+    });
+    setLayouts({ xs: newLayout.filter(e => e.i !== '__dropping-elem__') });
+  };
+  const onRemoveItem = i => {
+    const newLayout = layouts.xs.filter(el => el.i !== i.i);
+    setLayouts({ xs: newLayout });
+  };
+  const handleSave = async () => {
+    setLoading(true);
+    const res = await updateLayout({
+      layout: layouts.xs
+      // managerId
+    });
+    if (res.success) {
+      message.success('保存成功, 即将跳转回首页', 2);
+      setTimeout(() => {
+        history.push('/dashboard/home');
+      }, 2000);
+    } else {
+      message.error('保存失败,请重实验', 2);
+    }
+    setLoading(false);
+  };
+  const rowHeight = 50;
+  const marginTop = 5;
+  const layoutProps = {
+    className: styles.dashboard_left,
+    isDroppable: true,
+    breakpoints: { xs: 480 },
+    cols: { xs: 3 },
+    style: { height: 'calc(100vh - 120px)' },
+    margin: [marginTop, 5],
+    containerPadding: [0, 0],
+    layouts,
+    onDrop,
+    onLayoutChange,
+    rowHeight
+  };
+  const HeaderProps = {
+    status,
+    setStatus,
+    handleSave
+  };
+  return (
+    <Spin spinning={loading}>
+      <div className={styles.dashboard_setting}>
+        <div style={{ flex: 1 }}>
+          <Header {...HeaderProps} />
+          <ResponsiveGridLayout {...layoutProps}>
+            {layouts.xs.map(i => {
+              const compKey = i.i;
+              const Component =
+                compContainerObj[compKey] &&
+                compContainerObj[compKey].component;
+              return (
+                <div
+                  key={compKey}
+                  style={{ border: '1px solid', backgroundColor: '#fff' }}
+                >
+                  {Component && userBlockList.includes(compKey) ? (
+                    <Component
+                      height={rowHeight * i.h + marginTop * (i.h - 1)}
+                    />
+                  ) : (
+                    <div className={styles.warn_title}>
+                      该区块已被删除或被变更，请在配置重新配置
+                    </div>
+                  )}
+                  <span
+                    className={styles.remove}
+                    onClick={() => onRemoveItem(i)}
+                  >
+                    ×
+                  </span>
+                </div>
+              );
+            })}
+          </ResponsiveGridLayout>
+        </div>
+        {status === 'edit' && (
+          <RightContent
+            userBlockList={userBlockList}
+            tempObj={tempObj}
+            layouts={layouts}
+            setDragItem={setDragItem}
+          />
+        )}
+      </div>
+    </Spin>
+  );
+};
+export default connect(store => ({
+  ...store.menu
+}))(Dashboard);
