@@ -87,6 +87,12 @@ getLocalIdent: getCSSModuleLocalIdent,
 
 > umi-request 或者 axios 库。 umi-request 的配置文件放在 util 中。
 
+有两种 request：
+
+1 处理了标准 API，仅返回 data 内容，供业务使用
+
+2 requestNoSolve 目的是为了一些业务 需要通过 success（key）的 true 和 false 来进行后续的操作动作。而不是仅提取出 data 内容。这种情况就不能进行接口的统一处理。 比如 删除 API，成功后重新调用获取接口。不成功就不调用。
+
 ### 8 mock 数据
 
 > 方案: 利用 json-server 真实的模拟后端数据和接口。
