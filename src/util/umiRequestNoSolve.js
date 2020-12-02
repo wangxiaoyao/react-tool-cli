@@ -1,4 +1,5 @@
-import { extend } from "umi-request";
+import { extend } from "@alipay/bigfish/sdk/request";
+import { notification } from "@alipay/bigfish/antd";
 
 const codeMessage = {
   200: "服务器成功返回请求的数据。",
@@ -25,34 +26,47 @@ const errorHandler = (error) => {
   const { response = {} } = error;
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
-  alert(`${errortext},请求错误 ${status}: ${url}`);
+  notification.error({
+    message: `请求错误 ${status}: ${url}`,
+    description: errortext,
+  });
+
   if (status === 401) {
-    alert("未登录或登录已过期，请重新登录。");
+    notification.error({
+      message: "未登录或登录已过期，请重新登录。",
+    });
   } // environment should not be used
+
+  // if (status === 403) {
+  //   history.push('/exception/403');
+  //   return;
+  // }
+
+  // if (status <= 504 && status >= 500) {
+  //   history.push('/exception/500');
+  //   return;
+  // }
+
+  // if (status >= 404 && status < 422) {
+  //   history.push('/exception/404');
+  // }
 };
+/**
+ * 配置request请求时的默认参数
+ */
 
 const request = extend({
+  errorHandler,
+  suffix: ".json",
+  // 默认错误处理
   credentials: "include", // 默认请求是否带上cookie
-  // 前缀
-  // prefix: "/api/v1",
-  // 后缀
-  // suffix: ".json",
-  // 超时
-  // timeout: 100000,
-  // 头部信息
   headers: {
     "Content-Type": "application/json; charset=utf-8",
     Accept: "application/json",
+    // SKIP_AUTH: true,
   },
-  // 默认参数
-  // params: {
-  //   token: "xiaoyao", // 所有请求默认带上 token 参数
-  // },
-  // 异常处理
-  errorHandler,
 });
 
-// 拦截器
 request.interceptors.request.use((url, options) => {
   const data = {
     url,
@@ -60,16 +74,13 @@ request.interceptors.request.use((url, options) => {
       ...options,
     },
   };
-  if (data.options.method.toUpperCase() === "POST") {
-    data.options.data = {
-      tntInstId: "MYBKC1CN",
-      ...(data.options.data || {}),
-    };
-  }
-  if (data.options.method.toUpperCase() === "GET") {
+  if (!data.options.method || ["GET", "DELETE"].includes(data.options.method)) {
     data.options.params = {
-      tntInstId: "MYBKC1CN",
       ...(data.options.params || {}),
+    };
+  } else {
+    data.options.data = {
+      ...(data.options.data || {}),
     };
   }
   return data;
@@ -77,22 +88,6 @@ request.interceptors.request.use((url, options) => {
 
 export default async (...rest) => {
   const res = await request(...rest);
-  // 依据后端的通用模板API，进行项目处理
-  if (res && res.code === 0) {
-    return res.data || "成功";
-  }
-  // 没有页面的时候到403页面
-  // if (res && res.noPage) {
-  //   history.push("/403");
-  // }
-  // 用户没有登录
-  // if (res && res.exception==='用户没有登录') {
-  //   history.push("/login");
-  // }
-  //统一的错误处理
-  // if(res && res.message && res.code!==0){
-  // alert(res.message)
-  // }
-  return null;
-  // return res;
+  // 不作任何处理
+  return res;
 };

@@ -5,7 +5,7 @@
 依据 create-react-app 创建一个自己的脚手架，以及常见库/案例的使用。有两个分支：
 
 - master：基本框架
-- library：常用库/案例： 我按照功能性放在 page 目录下。 其中文件夹以 \_lib 结尾。案例中使用 mock 数据，均放在顶部。不使用 service
+- library：常用库/案例： 我按照功能性放在 page 目录下。 其中文件夹以 \_lib 结尾。案例中使用 mock 数据，均放在顶部。不使用 service。
 
 ## 主分支： 框架的修改
 
@@ -86,6 +86,12 @@ getLocalIdent: getCSSModuleLocalIdent,
 ### 7 server
 
 > umi-request 或者 axios 库。 umi-request 的配置文件放在 util 中。
+
+有两种 request：
+
+1 处理了标准 API，仅返回 data 内容，供业务使用
+
+2 requestNoSolve 目的是为了一些业务 需要通过 success（key）的 true 和 false 来进行后续的操作动作。而不是仅提取出 data 内容。这种情况就不能进行接口的统一处理。 比如 删除 API，成功后重新调用获取接口。不成功就不调用。
 
 ### 8 mock 数据
 
