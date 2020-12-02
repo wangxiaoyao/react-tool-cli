@@ -91,8 +91,8 @@ export default async (...rest) => {
   // }
   //统一的错误处理
   // if(res && res.message && res.code!==0){
-    // alert(res.message)
-  }
+  // alert(res.message)
+  // }
   return null;
   // return res;
-}
+};
