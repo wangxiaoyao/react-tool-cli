@@ -161,3 +161,7 @@ npm install json-server concurrently mockjs --save-dev
 ## redux是核心，react-redux扩展， thunk支持函数
 npm install redux react-redux redux-thunk
 ```
+
+## lib
+
+- G2
