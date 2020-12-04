@@ -8,6 +8,10 @@ const TopForm = (props) => {
   const { Option } = Select;
 
   const onFinish = () => {
+    const result = form.getFieldValue("executeTime");
+    console.log("验证getFieldValue", result);
+    const result1 = form.getFieldsValue();
+    console.log("验证getFieldsValue", result1);
     form.validateFields().then((formVal) => {
       handleSubmit(formVal);
     });
