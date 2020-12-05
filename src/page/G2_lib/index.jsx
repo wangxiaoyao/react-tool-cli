@@ -1,51 +1,26 @@
 import React, { useEffect, useState } from "react";
-import G2 from "@antv/g2";
+import G2Demo from "./G2Demo";
 
 // G2和react的融合
 const G2_lib = (props) => {
-  const { flag, chartData } = props;
-  const [chart, setChart] = useState();
+  const flag = "contain";
+  const data = [
+    { year: "1951 年", sales: 38 },
+    { year: "1952 年", sales: 52 },
+    { year: "1956 年", sales: 61 },
+    { year: "1957 年", sales: 145 },
+    { year: "1958 年", sales: 48 },
+    { year: "1959 年", sales: 38 },
+    { year: "1960 年", sales: 38 },
+    { year: "1962 年", sales: 38 },
+  ];
 
-  // console.log('flag', flag);
-  // console.log('chartData', chartData);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    const _chart = new G2.Chart({
-      container: flag,
-      forceFit: true,
-      height: 230,
-    });
-    _chart.source(chartData[0]);
-    _chart.scale("value", {
-      min: 0,
-    });
-    _chart.scale("year", {
-      range: [0, 1],
-    });
-    _chart.tooltip({
-      crosshairs: {
-        type: "line",
-      },
-    });
-    _chart.line().position("year*value");
-    _chart.point().position("year*value").size(4).shape("circle").style({
-      stroke: "#fff",
-      lineWidth: 1,
-    });
-    _chart.render();
-    setChart(_chart);
-  }, [chartData, flag]);
-
-  useEffect(() => {
-    if (chartData[1] === flag) {
-      // console.log('更新');
-      // console.log('chart', chart);
-      chart.changeData(chartData[0]);
-    }
-  }, [chart, chartData, flag]);
-
-  return <div id={flag}></div>;
+  return (
+    <div>
+      <h1>g2和react的结合</h1>
+      <G2Demo flag={flag} chartData={data} />
+    </div>
+  );
 };
 
 export default G2_lib;

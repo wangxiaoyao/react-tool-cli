@@ -63,10 +63,16 @@ const RouteConfig = [
     key: "iscroll",
   },
   {
-    title: "可视化",
+    title: "可视化g2Plot",
     path: "/g2Plot",
     component: require("@page/G2Plot_lib").default,
     key: "g2Plot",
+  },
+  {
+    title: "可视化g2",
+    path: "/g2",
+    component: require("@page/G2_lib").default,
+    key: "g2",
   },
   {
     title: "规则树：或且等",
