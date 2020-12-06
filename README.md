@@ -165,3 +165,4 @@ npm install redux react-redux redux-thunk
 ## lib
 
 - G2
+- G2Plot
