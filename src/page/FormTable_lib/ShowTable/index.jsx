@@ -9,7 +9,7 @@ const ShowTable = ({
   // 头部form数据：用来分页
   headFormVal,
 }) => {
-  // 分页
+  // 分页: 若是前端分页 只需要将paginationProps 设置为变量（useState）
   let paginationProps = {};
   if (
     showTableData.paginator &&
