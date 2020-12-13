@@ -166,3 +166,4 @@ npm install redux react-redux redux-thunk
 
 - G2
 - G2Plot
+- 表格： 前端分页和后端分页
