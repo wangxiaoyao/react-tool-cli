@@ -167,3 +167,5 @@ npm install redux react-redux redux-thunk
 - G2
 - G2Plot
 - 表格： 前端分页和后端分页
+- 动态增减表单
+- antd 表单验证以及正则
