@@ -92,6 +92,12 @@ const RouteConfig = [
     component: require("@page/FormTable_lib").default,
     key: "formTable",
   },
+  {
+    title: "动态表单",
+    path: "/dyanamicForm",
+    component: require("@page/DyanamicForm_lib").default,
+    key: "dyanamicForm",
+  },
 ];
 
 export default RouteConfig;
