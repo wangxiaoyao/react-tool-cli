@@ -98,6 +98,12 @@ const RouteConfig = [
     component: require("@page/DyanamicForm_lib").default,
     key: "dyanamicForm",
   },
+  {
+    title: "表单验证",
+    path: "/formValidate",
+    component: require("@page/FormValidate_lib").default,
+    key: "formValidate",
+  },
 ];
 
 export default RouteConfig;
